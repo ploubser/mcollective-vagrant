@@ -1,6 +1,10 @@
 collectives = mcollective
 main_collective = mcollective
+<% if @osfamily == "Debian" %>
+libdir = /usr/share/mcollective/plugins
+<% else %>
 libdir = /usr/libexec/mcollective
+<% end %>
 logfile = /var/log/mcollective.log
 loglevel = info
 daemonize = 1
@@ -12,7 +16,7 @@ direct_addressing = yes
 direct_addressing_threshold = 5
 
 connector = redis
-plugin.redis.host = 192.168.2.10
+plugin.redis.host = 192.168.3.10
 
 factsource = yaml
 plugin.yaml = /etc/mcollective/facts.yaml
@@ -24,3 +28,7 @@ registerinterval = 10
 rpcaudit = 1
 rpcauditprovider = logfile
 plugin.rpcaudit.logfile = /var/log/mcollective-audit.log
+
+rpcauthorization = 1
+rpcauthprovider = action_policy
+plugin.actionpolicy.allow_unconfigured = 1

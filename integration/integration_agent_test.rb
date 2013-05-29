@@ -1,7 +1,11 @@
 #! /usr/bin/env ruby
 
 require File.join(File.dirname(__FILE__), "spec_helper.rb")
-require '/usr/libexec/mcollective/mcollective/agent/integration.rb'
+begin
+  require '/usr/libexec/mcollective/mcollective/agent/integration.rb'
+rescue Exception => e
+  require '/usr/share/mcollective/plugins/mcollective/agent/integration.rb'
+end
 
 describe "integration agent" do
   before :all do

@@ -15,6 +15,6 @@ node default {
   }
 
   host{"puppet":
-    ip => "192.168.2.10"
+    ip => "192.168.3.10"
   }
 }

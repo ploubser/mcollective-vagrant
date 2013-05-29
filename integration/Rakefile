@@ -2,10 +2,18 @@ require File.join(File.dirname(__FILE__), "spec_helper.rb")
 require 'rake'
 require 'rspec/core/rake_task'
 
-desc "Run integration tests"
-RSpec::Core::RakeTask.new(:integration) do |t|
-    t.pattern = '*_test.rb'
-    t.rspec_opts = File.read("spec.opts").chomp
+if defined?(RSpec::Core::RakeTask)
+  desc "Run integration tests"
+  RSpec::Core::RakeTask.new(:integration) do |t|
+      t.pattern = 'integration_agent_test.rb'
+      t.rspec_opts = File.read("spec.opts").chomp
+  end
+
+  desc "Run build integration tests"
+  RSpec::Core::RakeTask.new(:build_integration) do |t| 
+      t.pattern = ['build_integration_test.rb', 'integration_agent_test.rb']
+      t.rspec_opts = File.read("spec.opts").chomp
+  end
 end
 
-task :default => [:integration]
+task :default => :integration

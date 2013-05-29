@@ -1,6 +1,10 @@
 collectives = mcollective
 main_collective = mcollective
+<% if @osfamily == "Debian" %>
+libdir = /usr/share/mcollective/plugins
+<% else %>
 libdir = /usr/libexec/mcollective
+<% end %>
 loglevel = warn
 logger_type = console
 daemonize = 1
@@ -12,7 +16,7 @@ direct_addressing = yes
 direct_addressing_threshold = 5
 
 connector = redis
-plugin.redis.host = 192.168.2.10
+plugin.redis.host = 192.168.3.10
 
 factsource = yaml
 plugin.yaml = /etc/mcollective/facts.yaml

@@ -1,9 +1,23 @@
 class mcollective::config {
+   
+   if $osfamily == "Debian"{
+     $mcpath = "/usr/share/mcollective/plugins/mcollective/"
+   }else{
+     $mcpath = "/usr/libexec/mcollective/mcollective"
+   }
+
    file{"/etc/mcollective/server.cfg":
       owner => root,
       group => root,
       mode  => 0500,
       content => template("mcollective/server.cfg.erb")
+   }
+
+   file{"/etc/mcollective/plugin.d":
+      owner  => root,
+      group  => root,
+      mode   => 0744,
+      ensure => directory,
    }
 
    file{"/etc/mcollective/client.cfg":
@@ -20,7 +34,7 @@ class mcollective::config {
       source => "puppet:///modules/mcollective/inventory.mc"
    }
 
-   file{"/usr/libexec/mcollective/mcollective":
+   file{$mcpath:
       owner => root,
       group => root,
       recurse => true,
@@ -33,4 +47,18 @@ class mcollective::config {
       group => root,
       mode => 0444,
    }
+
+  file{"/etc/mcollective/policies":
+      ensure => "directory",
+      owner  => root,
+      group  => root,
+      mode   => 0444,
+  } ->
+
+  file{"/etc/mcollective/policies/actionpolicy_test.policy":
+      owner  => root,
+      group  => root,
+      mode   => 0444,
+      source => "puppet:///modules/mcollective/actionpolicy_test.policy", 
+  }
 }
